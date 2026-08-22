@@ -1,0 +1,46 @@
+{
+  "$comment": "THE hand-written part. Four packages -- ui, js, php, py -- are generated from this directory and are never edited. Fix this file, then regenerate.",
+
+  "connectorApi": 1,
+
+  "service": "monday",
+  "title": "monday.com",
+  "domain": "productivity",
+  "$domainComment": "fancy-flow's ConnectorDomain, which has 17 values and no `project-management`. friends.json calls monday `project-management` because that is the BACKLOG's 33-domain vocabulary, and the two are different lists answering different questions. Re-spelling one to match the other is the defect this repo keeps naming: the kit owns `domain`, so `productivity` it is.",
+  "docs": "https://developer.monday.com/api-reference/reference/items",
+
+  "auth": "api_key",
+  "requires": ["apiToken"],
+  "authorize": {
+    "kind": "header",
+    "header": "Authorization",
+    "credential": "apiToken",
+    "$comment": "BARE, with no `Bearer ` prefix. Both spellings answer 401 to an invalid token, so the wire cannot tell them apart and this had to come from monday's own authentication doc rather than from a probe. A `Bearer ` prefix here would fail every real call with an authentication error that says nothing about the prefix."
+  },
+
+  "headers": {
+    "API-Version": "2026-07",
+    "$comment": "Optional, and that is exactly why it is pinned. Omitting it means `whatever is current`, which is UNDEFINED rather than latest -- monday runs three versions in parallel (2026-04 maintenance, 2026-07 current, 2026-10 release candidate) and the default moves under you. Same reasoning as Square's Square-Version."
+  },
+
+  "sandbox": "none",
+  "$sandboxComment": "CHECKED, not assumed. monday has no separate test estate: there is one API host, one set of tokens, and a developer account is a real account. That makes this `none` rather than `unverified` -- somebody looked.",
+  "sandboxNote": "monday has no test estate. A developer plan is a real account with real boards, so anything an action creates is created for real. The faker is the only safe way to develop against this connector, which is why every action ships with one.",
+
+  "baseUrls": {
+    "live": "https://api.monday.com"
+  },
+
+  "encoding": "graphql",
+  "$encodingComment": "The first non-REST provider. One endpoint, one method, and the operation is not in the URL at all -- it is in a document carried in the body, with config mapping onto that document's VARIABLES. The wire format is still JSON; what differs is that the request names its own operation.",
+
+  "credentialFields": [
+    {
+      "key": "apiToken",
+      "label": "API token",
+      "scope": "account",
+      "secret": true,
+      "help": "From monday.com: your avatar -> Developers -> My Access Tokens. It carries YOUR permissions and every board you can see, so a personal token grants an automation everything you have."
+    }
+  ]
+}

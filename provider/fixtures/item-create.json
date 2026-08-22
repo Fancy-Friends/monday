@@ -1,0 +1,17 @@
+{
+  "$comment": "GraphQL WRAPS every response under `data`, keyed by the field the document named -- `{data: {create_item: {...}}}`. Reproduced rather than flattened, because an author who wires {{ $json.data.create_item.id }} against the fake must find the same path when a real item arrives. Read from monday's introspection schema (Item: id, name, url, created_at), not from memory.",
+  "operation": "item_create",
+
+  "response": {
+    "data": {
+      "create_item": {
+        "id": { "$fake": "digits", "length": 10 },
+        "name": { "$config": "itemName", "as": "string", "default": "New item" },
+        "url": "https://example.monday.com/boards/1234567890/pulses/1234567890",
+        "$urlComment": "STATIC, and deliberately not built from the drawn id. monday's real url embeds both the board and the item -- .../boards/<boardId>/pulses/<itemId> -- and the fixture vocabulary has no concatenation, so the choice is a generic url or a made-up directive. Square's receipt_url is static for the same reason. An author reading this fake gets a plausibly-shaped link; they do not get one whose ids agree with the item beside it, and that is worth knowing before wiring a test against it.",
+        "created_at": "2026-01-01T00:00:00Z"
+      }
+    },
+    "$errorsComment": "No `errors` key at all. GraphQL omits it on success rather than sending an empty array, and a faker that always included one would teach the wrong shape -- an author checking `if (errors)` would find it truthy on every fake call."
+  }
+}

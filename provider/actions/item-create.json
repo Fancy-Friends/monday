@@ -1,0 +1,88 @@
+{
+  "$comment": "Read from monday's own introspection schema (GET /v2/get_schema, served unauthenticated), not from docs prose. create_item(board_id: ID!, item_name: String!, column_values: JSON, group_id: String, ...) -> Item.",
+  "operation": "item_create",
+  "kind": "item",
+  "title": "monday.com item",
+  "description": "Create an item on a monday.com board.",
+  "summary": "create an item",
+  "docs": "https://developer.monday.com/api-reference/reference/items#create-an-item",
+  "sideEffects": "unsafe-to-replay",
+  "$idempotencyComment": "monday offers no idempotency key on create_item -- there is no header and no argument for one in the schema. So this is honestly `unsafe-to-replay` with no way to make it safe, and saying so is better than implying a guarantee the API cannot give. A retried durable run creates a SECOND item.",
+  "request": {
+    "method": "POST",
+    "path": "/v2",
+    "encoding": "graphql",
+    "$pathComment": "Every monday operation is POST /v2. The path says nothing about what is being called -- the document does -- which is the whole reason `graphql` is an encoding rather than a spelling of `json`.",
+    "document": "mutation CreateItem($boardId: ID!, $itemName: String!, $groupId: String, $columnValues: JSON) {\n  create_item(\n    board_id: $boardId\n    item_name: $itemName\n    group_id: $groupId\n    column_values: $columnValues\n  ) {\n    id\n    name\n    url\n    created_at\n  }\n}"
+  },
+  "config": [
+    {
+      "type": "text",
+      "key": "boardId",
+      "label": "Board ID",
+      "required": true,
+      "description": "The numeric id in the board URL: monday.com/boards/1234567890.",
+      "send": {
+        "as": "boardId",
+        "value": "string"
+      },
+      "$comment": "ID! in the schema. monday's ID accepts a numeric string, and sending it as a string avoids the precision loss a large board id would suffer as a JSON number."
+    },
+    {
+      "type": "text",
+      "key": "itemName",
+      "label": "Item name",
+      "required": true,
+      "description": "What the item is called on the board.",
+      "send": {
+        "as": "itemName",
+        "value": "string"
+      }
+    },
+    {
+      "type": "text",
+      "key": "groupId",
+      "label": "Group ID",
+      "description": "Which group on the board to create it in. Left empty, monday uses the board's default group.",
+      "send": {
+        "as": "groupId",
+        "value": "string"
+      }
+    },
+    {
+      "type": "keyvalue",
+      "key": "columnValues",
+      "label": "Column values",
+      "description": "Column id to value, e.g. status -> Done. Which values a column accepts depends on its type.",
+      "send": {
+        "as": "columnValues",
+        "value": "keyvalue",
+        "encoding": "json",
+        "$comment": "json, NOT object. monday's `JSON` scalar is documented in its own schema as `A JSON formatted string` -- so this variable carries a STRING containing JSON, not a map. Sending the map would put an object where monday expects text, and it rejects it. This is the mirror of the trap Telegram forced `encoding: object` in for, and the two are one keystroke apart."
+      }
+    }
+  ],
+  "outputShape": [
+    {
+      "path": "data.create_item.id",
+      "type": "string",
+      "description": "The new item's id."
+    },
+    {
+      "path": "data.create_item.name",
+      "type": "string",
+      "description": "The item's name as monday stored it."
+    },
+    {
+      "path": "data.create_item.url",
+      "type": "string",
+      "description": "Link to the item on the board."
+    },
+    {
+      "path": "data.create_item.created_at",
+      "type": "string",
+      "description": "When it was created."
+    }
+  ],
+  "$outputComment": "Rooted at `data.create_item` because that is where GraphQL puts it -- the response envelope is `{data: {<field>: ...}}` and the field is named by the document. Flattening it here would make an author who wires {{ $json.data.create_item.id }} against the faker find a different path when a real item arrives."
+}
