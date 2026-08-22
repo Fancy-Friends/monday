@@ -60,7 +60,7 @@
     "packages/ui/tsconfig.json": "2cdc4c3b504406aa9553ffad3d936061d66be410030ac3571f0fc81d737d6875",
     "packages/ui/tsup.config.ts": "4067a7f50c1fbbc3c25addab30d28ccada74cc2f80f1b23aecbdc85a3fa50bc0",
     "phpunit.xml": "6c946c5d7d1aadae0a743ab467d363a9c89d959191a37736dd8e949568e94699",
-    "provider/actions/item-create.json": "af9887abd03ee12e5d45f91c54acec63e0d56382b693f3301608d8a87681cdfc",
+    "provider/actions/item-create.json": "ff2d87ec138467ce306f7dd0e04c6f95935ba0b94886e0fa0cde50c44843fca5",
     "provider/fixtures/item-create.json": "16c0d927e76138d5c45f79a63f1fa4f91a0c173d67a958e71cd10233e8e01547",
     "provider/manifest.json": "e112e7f5897f6f889f9acb4cf425212e0137590530f6f84098b1694c733d900c",
     "verify/README.md": "d4c97b6da660adba9b1e09adb98a0e365f706b5f30e1b728e354df88d1fb8055",

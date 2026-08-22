@@ -84,5 +84,20 @@
       "description": "When it was created."
     }
   ],
-  "$outputComment": "Rooted at `data.create_item` because that is where GraphQL puts it -- the response envelope is `{data: {<field>: ...}}` and the field is named by the document. Flattening it here would make an author who wires {{ $json.data.create_item.id }} against the faker find a different path when a real item arrives."
+  "$outputComment": "Rooted at `data.create_item` because that is where GraphQL puts it -- the response envelope is `{data: {<field>: ...}}` and the field is named by the document. Flattening it here would make an author who wires {{ $json.data.create_item.id }} against the faker find a different path when a real item arrives.",
+  "contract": {
+    "$comment": "The surface this action USES, which is what drift-check stores and diffs. For a GraphQL provider these are the mutation's ARGUMENT names and the selected FIELD names -- not URL paths, because there is only one path and it says nothing.",
+    "sends": [
+      "board_id",
+      "item_name",
+      "group_id",
+      "column_values"
+    ],
+    "reads": [
+      "id",
+      "name",
+      "url",
+      "created_at"
+    ]
+  }
 }
