@@ -55,9 +55,14 @@ final class ItemCreate
      * later as an "invalid request" from monday.com.
      *
      * @param array<string,mixed> $config
-     * @return array<string,scalar>
+     * An EMPTY body is `{}`, not `[]` — and PHP cannot tell those apart, because
+     * both are `array()` and `json_encode` picks the list. So an empty one is
+     * returned as an object. TypeScript and Python have no such ambiguity, which
+     * is why this is a difference only the byte-parity suite can see.
+     *
+     * @return array<string,mixed>|\stdClass
      */
-    public static function body(array $config): array
+    public static function body(array $config): array|\stdClass
     {
         if (($config['boardId'] ?? null) === null || ($config['boardId'] ?? null) === '') {
             throw new ConnectorConfigException('item_create: "boardId" is required (Board ID).');
@@ -84,6 +89,7 @@ final class ItemCreate
             $body[$key] = $value;
         }
 
+        $body = $body === [] ? new \stdClass() : $body;
         return ['query' => self::DOCUMENT, 'variables' => $body];
     }
 
