@@ -27,6 +27,43 @@ dependencies.
 subject to the kit's full approval bar, and one per provider is hundreds of
 dependencies nobody is tracking.
 
+## Setting it up
+
+Everything below is generated from `provider/manifest.json`, so it cannot disagree with what the packages do.
+
+### Credentials
+
+A monday.com connection holds 1 value.
+
+Every value here is `account` scope: one per connected account, not one per installation.
+
+| Field | Scope | Secret | Where it comes from |
+|---|---|---|---|
+| **API token** | per connected account | **secret** | From monday.com: your avatar -> Developers -> My Access Tokens. It carries YOUR permissions and every board you can see, so a personal token grants an automation everything you have. |
+
+### The estate
+
+**monday.com has no test estate, and somebody checked.** Everything this connector does is real. Use the faker to build against it.
+
+> monday has no test estate. A developer plan is a real account with real boards, so anything an action creates is created for real. The faker is the only safe way to develop against this connector, which is why every action ships with one.
+
+## What it can do
+
+### Actions
+
+#### `item_create` — monday.com item
+
+Create an item on a monday.com board.
+
+`POST /v2` · **unsafe to replay** — a retried durable run does it TWICE
+
+| Input | Required | What it is |
+|---|---|---|
+| `boardId` | yes | The numeric id in the board URL: monday.com/boards/1234567890. |
+| `itemName` | yes | What the item is called on the board. |
+| `groupId` | no | Which group on the board to create it in. Left empty, monday uses the board's default group. |
+| `columnValues` | no | Column id to value, e.g. status -> Done. Which values a column accepts depends on its type. |
+
 ## Run it before you have credentials
 
 Every operation ships a **faker**, whether or not monday.com has a sandbox. Set a
