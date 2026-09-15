@@ -48,7 +48,7 @@ final class MondayFaker
     }
 
     /** @param array<string,mixed> $config */
-    private static function ItemCreate(array $config, mixed $fake): array
+    private static function ItemCreate(array $config, mixed $fake): array|\stdClass
     {
         return [
         'data' => [
