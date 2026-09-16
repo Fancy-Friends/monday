@@ -51,7 +51,7 @@
     "packages/py/src/fancy_monday/_runtime.py": "f9487f6a3b12a93be7990be72a45497258e5b986f3efe19c50607b8a779223e1",
     "packages/py/src/fancy_monday/actions/__init__.py": "cac00599b06bac0013256ce3554ba2e8f6711647974bf6b5c250d58d3003e94f",
     "packages/py/src/fancy_monday/actions/item_create.py": "5c488817ba0665dd01d83490478757df1e24010298b708ed2d28689fa29792fd",
-    "packages/py/src/fancy_monday/faker.py": "462c41d103f58e26dbbdc92b37b65070c6897a5ecf3d31b90d1da69b51515ac9",
+    "packages/py/src/fancy_monday/faker.py": "1d74e65a963c4fa55c1f5096276d505cea603a3f500397c4a94967a350eabfe5",
     "packages/py/src/fancy_monday/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "packages/py/src/fancy_monday/service.py": "186c2133671d151112c9647a7f77c5485be822ed2db44423903849d7fbbcf14c",
     "packages/py/tests/test_faker.py": "28b44e10e5520c6dfa7364170f6d190fbb76da010054dcb63d714000ed4e721e",
