@@ -20,6 +20,6 @@ return [
 
     'credentials' => [
         // API token (per connected account, secret).
-        'apiToken' => env('MONDAY_APITOKEN'),
+        'apiToken' => env('MONDAY_API_TOKEN', env('MONDAY_APITOKEN')),
     ],
 ];
